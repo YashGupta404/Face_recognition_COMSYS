@@ -1,3 +1,64 @@
+
+## 🧑‍🦰 Task A: Gender Classification Pipeline
+
+A robust deep learning pipeline for **Gender Classification** using facial images. This solution leverages transfer learning and data augmentation for high accuracy and generalization.
+
+### 🚀 Pipeline Overview
+
+1. 📦 **Load & Prepare Dataset**
+2. 🔁 **Augment Images** (rotation, flip, brightness, zoom, etc.)
+3. 🧠 **Model Architecture** (Transfer Learning with VGG16/ResNet)
+4. ⚙️ **Training with Adam Optimizer** + Early Stopping
+5. 🧪 **Model Evaluation** (accuracy, confusion matrix)
+6. 💾 **Save & Export Model**
+
+---
+
+## 📁 Dataset Structure (Task A)
+
+```
+├── train/
+│   ├── male/
+│   │   ├── img1.jpg
+│   │   └── ...
+│   └── female/
+│       ├── img2.jpg
+│       └── ...
+├── val/
+│   ├── male/
+│   └── female/
+```
+
+---
+
+
+## 🚀 Pipeline Overview (Task A)
+
+1. 📦 **Load & Prepare Dataset**  
+   Organize images into train/validation folders by gender.
+
+2. 🔁 **Augment Images**  
+   Apply augmentations such as rotation, flip, brightness, and zoom to increase data diversity.
+
+3. 🧠 **Model Architecture**  
+   Use transfer learning with VGG16 or ResNet as the backbone for gender classification.
+
+4. ⚙️ **Training with Adam Optimizer + Early Stopping**  
+   Train the model with Adam optimizer and use early stopping to prevent overfitting.
+
+5. 🧪 **Model Evaluation**  
+   Evaluate the model using accuracy and confusion matrix.
+
+6. 💾 **Save & Export Model**  
+   Save the trained model for deployment or further use.
+
+---
+## 🔗 Download
+
+[Download the trained Task A model from Google Drive](https://drive.google.com/drive/folders/1l2ABxoSceUv264JNKsRGhmCZAfvt_WVr?usp=sharing)
+
+
+
 # 🤖 FACECOM Face Recognition Pipeline (Task_B)
 
 A high-performance deep learning pipeline for robust **Face Recognition** under distorted conditions, built for the [FACECOM dataset](https://facecom.org). This solution is optimized for **Google Colab (T4 GPU)** and achieves excellent accuracy in under **2 hours** using:
@@ -28,7 +89,7 @@ yaml
 Copy
 Edit
 
----
+
 
 ## 🚀 Pipeline Overview
 
