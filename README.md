@@ -1,212 +1,155 @@
+# 🤖 Face Recognition & Gender Classification (FACECOM)
 
-## 🧑‍🦰 Task A: Gender Classification Pipeline
+A complete deep learning pipeline built for the **FACECOM 2025 Challenge**, supporting:
 
-A robust deep learning pipeline for **Gender Classification** using facial images. This solution leverages transfer learning and data augmentation for high accuracy and generalization.
+- 👩‍🦰 **Task A:** Gender Classification  
+- 🧑‍💻 **Task B:** Face Recognition under Distorted Conditions
 
-### 🚀 Pipeline Overview
-
-1. 📦 **Load & Prepare Dataset**
-2. 🔁 **Augment Images** (rotation, flip, brightness, zoom, etc.)
-3. 🧠 **Model Architecture** (Transfer Learning with VGG16/ResNet)
-4. ⚙️ **Training with Adam Optimizer** + Early Stopping
-5. 🧪 **Model Evaluation** (accuracy, confusion matrix)
-6. 💾 **Save & Export Model**
+> ✅ All models are hosted on Hugging Face Hub – no manual downloads required.  
+> Just place your test folder, run the script, and get evaluation metrics instantly!
 
 ---
 
-## 📁 Dataset Structure (Task A)
+## 📁 Project Structure
 
 ```
-├── train/
-│   ├── male/
-│   │   ├── img1.jpg
-│   │   └── ...
-│   └── female/
-│       ├── img2.jpg
-│       └── ...
-├── val/
-│   ├── male/
-│   └── female/
+Face_recognition_COMSYS/
+├── train_a/                         # Task A - Gender Classification
+│   ├── test.py                      # Evaluation script
+│   ├── Task_A.ipynb                 # Training notebook
+│   └── requirements.txt
+│
+├── train_b/                         # Task B - Face Recognition
+│   ├── predict_test.py              # Evaluation script
+│   ├── Task_B.ipynb                 # Training notebook
+│   └── requirements.txt
+│
+├── report.pdf                       # Technical Report
+├── README.md
+├── .gitignore
+└── .gitattributes
 ```
 
 ---
 
+## 🧑‍🦰 TASK A – Gender Classification
 
-## 🚀 Pipeline Overview (Task A)
+### 📐 Model Architecture
 
-1. 📦 **Load & Prepare Dataset**  
-   Organize images into train/validation folders by gender.
+- ✅ **Transfer Learning:** VGG16 / ResNet50 backbone
+- ✅ **Binary Classification:** Male vs Female
+- ✅ **Input Shape:** 150x150 RGB
+- ✅ **Optimizer:** Adam
+- ✅ **Callbacks:** EarlyStopping, ReduceLROnPlateau
+- ✅ **Data Augmentation:** Rotation, Flip, Brightness, Zoom
 
-2. 🔁 **Augment Images**  
-   Apply augmentations such as rotation, flip, brightness, and zoom to increase data diversity.
+### 📂 Expected Test Folder Structure
 
-3. 🧠 **Model Architecture**  
-   Use transfer learning with VGG16 or ResNet as the backbone for gender classification.
+```
+test/
+├── male/
+│   ├── image1.jpg
+│   └── ...
+└── female/
+    ├── image2.jpg
+    └── ...
+```
 
-4. ⚙️ **Training with Adam Optimizer + Early Stopping**  
-   Train the model with Adam optimizer and use early stopping to prevent overfitting.
-
-5. 🧪 **Model Evaluation**  
-   Evaluate the model using accuracy and confusion matrix.
-
-6. 💾 **Save & Export Model**  
-   Save the trained model for deployment or further use.
-
----
-## 🔗 Download
-
-[Download the trained Task A model from Google Drive](https://drive.google.com/drive/folders/1l2ABxoSceUv264JNKsRGhmCZAfvt_WVr?usp=sharing)
-
-
-
-# 🤖 FACECOM Face Recognition Pipeline (Task_B)
-
-A high-performance deep learning pipeline for robust **Face Recognition** under distorted conditions, built for the [FACECOM dataset](https://facecom.org). This solution is optimized for **Google Colab (T4 GPU)** and achieves excellent accuracy in under **2 hours** using:
-
-- 🧬 Advanced **Metric Learning (ArcFace)**
-- 🧪 Realistic **Augmentations**
-- 🧠 **Ensembling** with 5+ models
-- 🎯 SAM optimizer with Cosine Annealing
-- 🧹 Hard Sample Mining + Mixup Regularization
-
----
-
-## 📁 Dataset Structure
-
-├── train/
-│ ├── 001_frontal/
-│ │ ├── 001_frontal.jpg
-│ │ └── distortion/
-│ │ ├── blur_.jpg
-│ │ └── lowlight_.jpg
-│ └── ...
-├── val/
-│ ├── 101_frontal/
-│ │ ├── 101_frontal.jpg
-│ │ └── distortion/
-
-yaml
-Copy
-Edit
-
-
-
-## 🚀 Pipeline Overview
-
-1. 📦 **Load & Prepare Dataset**
-2. 🔁 **Augment Images** (blur, fog, rain, etc.)
-3. 🧠 **Model Architecture** (ArcFace + EfficientNet + ResNet + MobileNet)
-4. ⚙️ **Training with SAM Optimizer** + Cosine Annealing
-5. 🧪 **Embedding Generation**
-6. 🗳️ **Ensemble Voting** via Embedding Distances
-
----
-
-## 📌 Dependencies
+### 🔧 How to Run
 
 ```bash
-pip install tensorflow keras scikit-learn albumentations
-pip install efficientnet
-pip install -U keras-cv
-📥 Dataset Loading (Colab)
-python
-Copy
-Edit
-from google.colab import drive
-drive.mount('/content/drive')
+cd train_a
+pip install -r requirements.txt
+# ⬇️ Make sure to update the TEST_DIR variable inside test.py with your test folder path
+python test.py
+```
 
-!unzip -q "/content/drive/MyDrive/Task_B.zip" -d /content/FACECOM/
-🧼 Dataset Processing Script
-python
-Copy
-Edit
-import os
-import glob
+✅ This Will:
 
-def extract_images_from_dir(base_dir):
-    image_pairs = []
-    labels = []
+- 🔁 Automatically download model & preprocessor from Hugging Face  
+- 📊 Output metrics (Accuracy, Precision, Recall, F1 Score)  
+- 💾 Save metrics to `test_metrics.json`  
 
-    for identity_folder in sorted(os.listdir(base_dir)):
-        id_path = os.path.join(base_dir, identity_folder)
-        if not os.path.isdir(id_path): continue
+---
 
-        frontal_img = glob.glob(os.path.join(id_path, '*_frontal.jpg'))[0]
-        distortions = glob.glob(os.path.join(id_path, 'distortion', '*.jpg'))
+## 🧠 TASK B – Face Recognition under Distorted Conditions
 
-        for dist_img in distortions:
-            image_pairs.append((frontal_img, dist_img))
-            labels.append(identity_folder)
+### 📐 Model Architecture
 
-    return image_pairs, labels
-🧠 Model Highlights
-📐 ArcFace Loss for angular margin-based embedding separation
+- ✅ **Backbones:** EfficientNetB3, ResNet50, MobileNetV2
+- ✅ **Loss:** ArcFace (metric learning for angular separation)
+- ✅ **Optimizer:** Sharpness-Aware Minimization (SAM) + Cosine LR
+- ✅ **Input Shape:** 96x96 RGB
+- ✅ **Ensemble Voting** via embedding distances (k-NN)
 
-🏗️ EfficientNetB3 / ResNet50 / MobileNetV2 as backbone
+### 📂 Expected Test Folder Structure
 
-🧪 Augmentations: blur, fog, rain, resized, lighting
+```
+test/
+├── 001_frontal/
+│   ├── 001_frontal.jpg
+│   └── distortion/
+│       ├── blur.jpg
+│       └── lowlight.jpg
+├── 002_frontal/
+│   ├── 002_frontal.jpg
+│   └── distortion/
+│       ├── fog.jpg
+│       └── ...
+```
 
-📉 Training with SAM Optimizer + CosineDecayLR
+### 🔧 How to Run
 
-🧠 Ensemble 5 models → extract embeddings → vote with k-NN
+```bash
+cd train_b
+pip install -r requirements.txt
+# ⬇️ Make sure to update the TEST_FOLDER variable inside predict_test.py with your test folder path
+python predict_test.py
+```
 
-📈 Accuracy Results
-Model	Accuracy	GPU Time
-EfficientNetB3 + ArcFace	✅ 89.2%	⏱️ 38 mins
-5-Model Ensemble	✅ 92.7%	⏱️ ~1h 50m
+✅ This Will:
 
-🧪 Sample Predictions
-yaml
-Copy
-Edit
-👤 Predicted: 013_frontal | ✅ Correct
-👤 Predicted: 102_frontal | ❌ Incorrect
-💾 Save & Load Embeddings
-python
-Copy
-Edit
-import pickle
+- 📦 Automatically load model weights & LabelEncoder from Hugging Face  
+- 📊 Evaluate Top-1 accuracy, Precision, Recall, F1  
+- 💾 Save metrics to `test_metrics.json`
 
-# Save
-with open("embeddings.pkl", "wb") as f:
-    pickle.dump((embeddings, labels), f)
+---
 
-# Load
-with open("embeddings.pkl", "rb") as f:
-    embeddings, labels = pickle.load(f)
-📊 Evaluation via k-NN
-python
-Copy
-Edit
-from sklearn.neighbors import KNeighborsClassifier
+## ☁️ Model Hosting on Hugging Face
 
-knn = KNeighborsClassifier(n_neighbors=3, metric='cosine')
-knn.fit(train_embeddings, train_labels)
-accuracy = knn.score(val_embeddings, val_labels)
-print(f"Validation Accuracy: {accuracy*100:.2f}%")
-✅ Key Features
-🔁 Automatic folder traversal (no hardcoded filenames)
+All models are publicly hosted on:
 
-📦 Supports any number of identities
+👉 https://huggingface.co/YashGupta05/facecom-task-b-weights
 
-⚡ Embedding-based recognition → fast inference
+**Hosted Files:**
 
-💯 Works on T4 GPU (Colab free tier)
+- `Task_A_.keras` — Gender classifier
+- `preprocessor_task_A.pkl` — Preprocessing config for Task A
+- `model.keras` — Face recognition model
+- `preprocess.pkl` — LabelEncoder for Task B
 
-🔭 Future Work
-🎞️ Add temporal consistency using video
+No manual download needed. Scripts handle loading automatically.
 
-🤝 Fine-tune on user-specific data
+---
 
-📦 Export model for mobile apps (TFLite)
+## 💡 Highlights
 
-⭐ Final Tip
-💡 “Good embeddings make great models.”
+- ✅ No hardcoded filenames or manual downloads  
+- 📦 Fully automatic Hugging Face model loading  
+- 🧠 ArcFace + Transfer Learning architectures  
+- ⚡ Fast, GPU-optimized execution on Colab  
+- 🧪 Ready for real-world distortion conditions
 
+---
 
+## 🤝 Contributors
 
+- **Yash Gupta** – Developed Task B  
+- **Riti Kant Juhi** – Developed Task A  
+- **Rohit Roy** – Wrote Technical Report
 
+---
 
+## 📜 License
 
-
-
+Licensed under the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0).
